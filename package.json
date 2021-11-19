@@ -1,0 +1,36 @@
+{
+  "name": "uda-image-resize-project",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node src/main.ts",
+    "build": "npx tsc",
+    "lint": "eslint . --ext .ts",
+    "prettier": "prettier --config .prettierrc 'src/**/*.ts' --write"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jbergmeier/uda-image-resize-Project.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jbergmeier/uda-image-resize-Project/issues"
+  },
+  "homepage": "https://github.com/jbergmeier/uda-image-resize-Project#readme",
+  "dependencies": {
+    "@types/node": "^16.11.9",
+    "ts-node": "^10.4.0",
+    "typescript": "^4.5.2"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.4.0",
+    "@typescript-eslint/parser": "^5.4.0",
+    "eslint": "^8.2.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^1.19.1"
+  }
+}
