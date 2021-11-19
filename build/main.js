@@ -1,3 +1,6 @@
 "use strict";
-var hello = 1243;
-console.log(hello);
+Object.defineProperty(exports, "__esModule", { value: true });
+var myFunc = function (num) {
+    return num * num;
+};
+exports.default = myFunc;

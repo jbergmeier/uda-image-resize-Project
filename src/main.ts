@@ -1,3 +1,5 @@
-let hello:number = 1243;
-
-console.log(hello);
+const myFunc = (num: number): number => {
+    return num * num;
+  };
+  
+  export default myFunc;
