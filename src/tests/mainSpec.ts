@@ -1,7 +1,8 @@
 import supertest from 'supertest';
 import app from '../main';
-import path from 'path';
 import clearThumbDir from '../utilities/clearThumbCache';
+import path from "path"
+import resizeImage from "../utilities/fileReader"
 
 //const backupDir = path.join(__dirname, '..', '..','images/backup/')
 const thumbDir = path.join(__dirname, '..', '..', 'images/thumb/');
@@ -22,3 +23,23 @@ describe('Test endpoint responses', () => {
         .expect(201, done);
     });
 });
+
+
+const width = 255
+const height = 255
+const filename = "fjord"
+const fullDir = path.join(__dirname, '..', '..', '/images/full/')
+
+
+describe('Image Processing test', () => {
+    const filename = 'fjord';
+    const height = 223;
+    const width = 223;
+  
+    it('checks if file can be processed', async () => {
+        console.log("the path to file: " + fullDir)
+
+      const imgFile = await resizeImage(fullDir, filename, width, height);
+      expect(imgFile).toEqual(thumbDir + 'fjord-223-223.jpg');
+    });
+  });

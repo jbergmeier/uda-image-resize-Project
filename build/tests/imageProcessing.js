@@ -1,6 +1,4 @@
 "use strict";
-//import {promises as fsPromises} from fs;
-// Sharp test
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -41,37 +39,28 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var sharp_1 = __importDefault(require("sharp"));
-var path_1 = __importDefault(require("path"));
-// TODO remove any --> string/number
-var resizeImage = function (input, filename, width, height) { return __awaiter(void 0, void 0, void 0, function () {
-    var output, jpgResize, err_1;
-    return __generator(this, function (_a) {
-        switch (_a.label) {
-            case 0:
-                output = path_1.default.join(input, '..', 'thumb/', filename + '-' + width + '-' + height + '.jpg');
-                console.log(output);
-                console.log(input);
-                _a.label = 1;
-            case 1:
-                _a.trys.push([1, 3, , 4]);
-                return [4 /*yield*/, (0, sharp_1.default)(path_1.default.join(input, filename + '.jpg'))
-                        .resize(width, height, {
-                    //fit: sharp.fit.inside,
-                    //withoutEnlargement: false
-                    })
-                        .jpeg()
-                        .toFile(output)];
-            case 2:
-                jpgResize = _a.sent();
-                return [2 /*return*/, output];
-            case 3:
-                err_1 = _a.sent();
-                console.log('error from sharp: ' + err_1);
-                return [2 /*return*/, Error.prototype.message];
-            case 4: return [2 /*return*/];
-        }
-    });
-}); };
-// END sharp test --------
-exports.default = resizeImage;
+var posix_1 = __importDefault(require("path/posix"));
+var fileReader_1 = __importDefault(require("../utilities/fileReader"));
+var width = 255;
+var height = 255;
+var filename = "fjord";
+var pathToFile = posix_1.default.join(__dirname, '..', '..', '/images/');
+describe('Image Processing test', function () {
+    var filename = 'fjord';
+    var height = 222;
+    var width = 222;
+    it('checks if file can be processed', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var imageFile;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    console.log("the path to file: " + pathToFile);
+                    return [4 /*yield*/, (0, fileReader_1.default)(pathToFile + 'full/', filename, width, height)];
+                case 1:
+                    imageFile = _a.sent();
+                    expect(imageFile).toEqual(pathToFile + '/thumb/fjord-222-222.jpg');
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+});

@@ -41,8 +41,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var main_1 = __importDefault(require("../main"));
-var path_1 = __importDefault(require("path"));
 var clearThumbCache_1 = __importDefault(require("../utilities/clearThumbCache"));
+var path_1 = __importDefault(require("path"));
+var fileReader_1 = __importDefault(require("../utilities/fileReader"));
 //const backupDir = path.join(__dirname, '..', '..','images/backup/')
 var thumbDir = path_1.default.join(__dirname, '..', '..', 'images/thumb/');
 // ------Tests
@@ -66,4 +67,27 @@ describe('Test endpoint responses', function () {
                 return [2 /*return*/];
             });
         }); });
+});
+var width = 255;
+var height = 255;
+var filename = "fjord";
+var fullDir = path_1.default.join(__dirname, '..', '..', '/images/full/');
+describe('Image Processing test', function () {
+    var filename = 'fjord';
+    var height = 223;
+    var width = 223;
+    it('checks if file can be processed', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var imgFile;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    console.log("the path to file: " + fullDir);
+                    return [4 /*yield*/, (0, fileReader_1.default)(fullDir, filename, width, height)];
+                case 1:
+                    imgFile = _a.sent();
+                    expect(imgFile).toEqual(thumbDir + 'fjord-223-223.jpg');
+                    return [2 /*return*/];
+            }
+        });
+    }); });
 });

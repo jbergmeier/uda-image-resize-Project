@@ -3,6 +3,7 @@
 
 import sharp from 'sharp';
 import path from 'path';
+import { stringify } from 'querystring';
 
 // TODO remove any --> string/number
 const resizeImage = async (
@@ -10,7 +11,7 @@ const resizeImage = async (
   filename: string,
   width: number,
   height: number
-) => {
+)  : Promise<string> => {
   const output = path.join(
     input,
     '..',
@@ -27,10 +28,10 @@ const resizeImage = async (
       })
       .jpeg()
       .toFile(output);
-    return jpgResize;
+    return output;
   } catch (err) {
     console.log('error from sharp: ' + err);
-    return err;
+    return Error.prototype.message
   }
 };
 
