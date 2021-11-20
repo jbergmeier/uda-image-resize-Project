@@ -39,44 +39,52 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var supertest_1 = __importDefault(require("supertest"));
-var main_1 = __importDefault(require("../main"));
-var fs_1 = __importDefault(require("fs"));
+var express_1 = __importDefault(require("express"));
+var fileReader_1 = __importDefault(require("../../utilities/fileReader"));
+var images = express_1.default.Router();
 var path_1 = __importDefault(require("path"));
-var backupDir = path_1.default.join(__dirname, '..', '..', 'images/backup/');
-var thumbDir = path_1.default.join(__dirname, '..', '..', 'images/thumb/');
-fs_1.default.copyFile(backupDir + 'fjord-200-200.jpg', thumbDir + 'fjord-200-200.jpg', function (err) {
-    if (err)
-        throw err;
-    console.log('sample File copied to Thumbfolder');
-});
-// ------Tests 
-describe('Test endpoint responses', function () {
-    beforeAll(function () {
-        console.log("hello WORLD: " + backupDir);
-    });
-    it('gets the api endpoint that does not exists', function (done) { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            (0, supertest_1.default)(main_1.default)
-                .get("/api/images/?filename=BlablaIMage&width=200&height=200")
-                .expect(404, done);
-            return [2 /*return*/];
-        });
-    }); }),
-        it('gets a cached image from API', function (done) { return __awaiter(void 0, void 0, void 0, function () {
+var existingFileChecker_1 = require("../../utilities/existingFileChecker");
+var fs_1 = __importDefault(require("fs"));
+images.get("/", function (req, res) {
+    var inputPath = path_1.default.join(__dirname, '..', '..', '..', 'images/full/');
+    var filename = String(req.query.filename) || '';
+    var imageWidth = Number(req.query.width) || NaN;
+    var imageHeight = Number(req.query.height) || NaN;
+    var fsPathThumbsFile = path_1.default.join(__dirname, '..', '..', '..', 'images/thumb/' + filename + '-' + imageWidth + '-' + imageHeight + '.jpg');
+    // check values
+    if (isNaN(imageHeight)) {
+        res.status(400).send("Image Height is not a valid value");
+    }
+    if (isNaN(imageWidth)) {
+        res.status(400).send("Image Width is not a valid value");
+    }
+    if (fs_1.default.existsSync(inputPath + filename + '.jpg') == false) {
+        res.status(404).send("Image not available!");
+    }
+    // Check if Thumb-Image in the given size is already there, if not, create it.
+    if ((0, existingFileChecker_1.checkIfFileExist)(fsPathThumbsFile) && (0, existingFileChecker_1.sizeOfExistingImage)(fsPathThumbsFile, imageWidth, imageHeight)) {
+        res.status(200).sendFile(fsPathThumbsFile);
+        console.log("Image in der Groesse bereits vorhanden!");
+    }
+    else {
+        // Call Resize Function with InputPath, filename, width and height
+        (function () { return __awaiter(void 0, void 0, void 0, function () {
+            var ri;
             return __generator(this, function (_a) {
-                (0, supertest_1.default)(main_1.default)
-                    .get("/api/images/?filename=fjord&width=200&height=200")
-                    .expect(200, done);
-                return [2 /*return*/];
+                switch (_a.label) {
+                    case 0: return [4 /*yield*/, (0, fileReader_1.default)(inputPath, filename, imageWidth, imageHeight)];
+                    case 1:
+                        ri = _a.sent();
+                        //res.render(path.join(__dirname, '..','..','..', 'public/index.html') , {name:"Nicht vorhanden"});
+                        res.status(201).sendFile(fsPathThumbsFile);
+                        console.log(ri);
+                        return [2 /*return*/];
+                }
             });
-        }); }),
-        it('calls the ApI of a non existing sized image', function (done) { return __awaiter(void 0, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                (0, supertest_1.default)(main_1.default)
-                    .get("/api/images/?filename=fjord&width=1&height=541")
-                    .expect(201, done);
-                return [2 /*return*/];
-            });
-        }); });
+        }); })();
+    }
+    // TODO value check??
+    // TODO check if file exists --> Error messasge
+    // TODO check if values for width and height are in a area...
 });
+exports.default = images;

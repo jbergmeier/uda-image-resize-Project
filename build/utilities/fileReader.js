@@ -1,4 +1,6 @@
 "use strict";
+//import {promises as fsPromises} from fs;
+// Sharp test
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -39,44 +41,37 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-var supertest_1 = __importDefault(require("supertest"));
-var main_1 = __importDefault(require("../main"));
-var fs_1 = __importDefault(require("fs"));
+var sharp_1 = __importDefault(require("sharp"));
 var path_1 = __importDefault(require("path"));
-var backupDir = path_1.default.join(__dirname, '..', '..', 'images/backup/');
-var thumbDir = path_1.default.join(__dirname, '..', '..', 'images/thumb/');
-fs_1.default.copyFile(backupDir + 'fjord-200-200.jpg', thumbDir + 'fjord-200-200.jpg', function (err) {
-    if (err)
-        throw err;
-    console.log('sample File copied to Thumbfolder');
-});
-// ------Tests 
-describe('Test endpoint responses', function () {
-    beforeAll(function () {
-        console.log("hello WORLD: " + backupDir);
+// TODO remove any --> string/number
+var resizeImage = function (input, filename, width, height) { return __awaiter(void 0, void 0, void 0, function () {
+    var output, jpgResize, err_1;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0:
+                output = path_1.default.join(input, '..', 'thumb/', filename + '-' + width + '-' + height + '.jpg');
+                console.log(output);
+                console.log(input);
+                _a.label = 1;
+            case 1:
+                _a.trys.push([1, 3, , 4]);
+                return [4 /*yield*/, (0, sharp_1.default)(path_1.default.join(input, filename + '.jpg'))
+                        .resize(width, height, {
+                    //fit: sharp.fit.inside, 
+                    //withoutEnlargement: false
+                    })
+                        .jpeg()
+                        .toFile(output)];
+            case 2:
+                jpgResize = _a.sent();
+                return [2 /*return*/, jpgResize];
+            case 3:
+                err_1 = _a.sent();
+                console.log("error from sharp: " + err_1);
+                return [2 /*return*/, err_1];
+            case 4: return [2 /*return*/];
+        }
     });
-    it('gets the api endpoint that does not exists', function (done) { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            (0, supertest_1.default)(main_1.default)
-                .get("/api/images/?filename=BlablaIMage&width=200&height=200")
-                .expect(404, done);
-            return [2 /*return*/];
-        });
-    }); }),
-        it('gets a cached image from API', function (done) { return __awaiter(void 0, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                (0, supertest_1.default)(main_1.default)
-                    .get("/api/images/?filename=fjord&width=200&height=200")
-                    .expect(200, done);
-                return [2 /*return*/];
-            });
-        }); }),
-        it('calls the ApI of a non existing sized image', function (done) { return __awaiter(void 0, void 0, void 0, function () {
-            return __generator(this, function (_a) {
-                (0, supertest_1.default)(main_1.default)
-                    .get("/api/images/?filename=fjord&width=1&height=541")
-                    .expect(201, done);
-                return [2 /*return*/];
-            });
-        }); });
-});
+}); };
+// END sharp test --------
+exports.default = resizeImage;
