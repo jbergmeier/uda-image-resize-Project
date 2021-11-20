@@ -14,9 +14,9 @@ exports.checkIfFileExist = checkIfFileExist;
 var sizeOfExistingImage = function (fsPathThumbsFile, imageWidth, height) {
     var sizeOfImage = (0, image_size_1.default)(fsPathThumbsFile);
     // TODO delete log - Test Tracking
-    console.log("File exists");
-    console.log("existingFile width: " + sizeOfImage.width);
-    console.log("existingFile height: " + sizeOfImage.height);
+    console.log('File exists');
+    console.log('existingFile width: ' + sizeOfImage.width);
+    console.log('existingFile height: ' + sizeOfImage.height);
     return sizeOfImage.width == imageWidth && sizeOfImage.height == height;
 };
 exports.sizeOfExistingImage = sizeOfExistingImage;

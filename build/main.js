@@ -26,16 +26,22 @@ var express_1 = __importDefault(require("express"));
 var dotenv = __importStar(require("dotenv"));
 var ejs = __importStar(require("ejs"));
 var path_1 = __importDefault(require("path"));
+var clearThumbCache_1 = __importDefault(require("./utilities/clearThumbCache"));
 dotenv.config();
 var app = (0, express_1.default)();
 var port = 3000 || process.env.PORT;
 app.engine('html', ejs.renderFile);
+// Clear Thumb Dir
+var thumbDir = path_1.default.join(__dirname, '..', 'images/thumb/');
+(0, clearThumbCache_1.default)(thumbDir);
 // Import Routes
 var index_1 = __importDefault(require("./routes/index"));
 app.use('/api', index_1.default);
 // Test Path
 app.get('/', function (req, res) {
-    res.render(path_1.default.join(__dirname, '..', 'public/index.html'), { name: "Hello Image Resize Friends" });
+    res.render(path_1.default.join(__dirname, '..', 'public/index.html'), {
+        name: 'Hello Image Resize Friends'
+    });
 });
 app.listen(port, function () {
     console.log("Server is running on port ".concat(port));

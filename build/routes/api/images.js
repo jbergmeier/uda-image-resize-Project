@@ -45,7 +45,7 @@ var images = express_1.default.Router();
 var path_1 = __importDefault(require("path"));
 var existingFileChecker_1 = require("../../utilities/existingFileChecker");
 var fs_1 = __importDefault(require("fs"));
-images.get("/", function (req, res) {
+images.get('/', function (req, res) {
     var inputPath = path_1.default.join(__dirname, '..', '..', '..', 'images/full/');
     var filename = String(req.query.filename) || '';
     var imageWidth = Number(req.query.width) || NaN;
@@ -53,18 +53,19 @@ images.get("/", function (req, res) {
     var fsPathThumbsFile = path_1.default.join(__dirname, '..', '..', '..', 'images/thumb/' + filename + '-' + imageWidth + '-' + imageHeight + '.jpg');
     // check values
     if (isNaN(imageHeight)) {
-        res.status(400).send("Image Height is not a valid value");
+        res.status(400).send('Image Height is not a valid value');
     }
     if (isNaN(imageWidth)) {
-        res.status(400).send("Image Width is not a valid value");
+        res.status(400).send('Image Width is not a valid value');
     }
     if (fs_1.default.existsSync(inputPath + filename + '.jpg') == false) {
-        res.status(404).send("Image not available!");
+        res.status(404).send('Image not available!');
     }
     // Check if Thumb-Image in the given size is already there, if not, create it.
-    if ((0, existingFileChecker_1.checkIfFileExist)(fsPathThumbsFile) && (0, existingFileChecker_1.sizeOfExistingImage)(fsPathThumbsFile, imageWidth, imageHeight)) {
+    if ((0, existingFileChecker_1.checkIfFileExist)(fsPathThumbsFile) &&
+        (0, existingFileChecker_1.sizeOfExistingImage)(fsPathThumbsFile, imageWidth, imageHeight)) {
         res.status(200).sendFile(fsPathThumbsFile);
-        console.log("Image in der Groesse bereits vorhanden!");
+        console.log('Image in der Groesse bereits vorhanden!');
     }
     else {
         // Call Resize Function with InputPath, filename, width and height

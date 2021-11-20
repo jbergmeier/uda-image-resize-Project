@@ -45,7 +45,7 @@ var path_1 = __importDefault(require("path"));
 var clearThumbCache_1 = __importDefault(require("../utilities/clearThumbCache"));
 //const backupDir = path.join(__dirname, '..', '..','images/backup/')
 var thumbDir = path_1.default.join(__dirname, '..', '..', 'images/thumb/');
-// ------Tests 
+// ------Tests
 describe('Test endpoint responses', function () {
     beforeAll(function () {
         (0, clearThumbCache_1.default)(thumbDir);
@@ -53,7 +53,7 @@ describe('Test endpoint responses', function () {
         it('gets the api endpoint that does not exists', function (done) { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 (0, supertest_1.default)(main_1.default)
-                    .get("/api/images/?filename=BlablaIMage&width=200&height=200")
+                    .get('/api/images/?filename=BlablaIMage&width=200&height=200')
                     .expect(404, done);
                 return [2 /*return*/];
             });
@@ -61,7 +61,7 @@ describe('Test endpoint responses', function () {
         it('calls the ApI of a non existing sized image', function (done) { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 (0, supertest_1.default)(main_1.default)
-                    .get("/api/images/?filename=fjord&width=1&height=541")
+                    .get('/api/images/?filename=fjord&width=1&height=541')
                     .expect(201, done);
                 return [2 /*return*/];
             });

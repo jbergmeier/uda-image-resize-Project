@@ -57,7 +57,7 @@ var resizeImage = function (input, filename, width, height) { return __awaiter(v
                 _a.trys.push([1, 3, , 4]);
                 return [4 /*yield*/, (0, sharp_1.default)(path_1.default.join(input, filename + '.jpg'))
                         .resize(width, height, {
-                    //fit: sharp.fit.inside, 
+                    //fit: sharp.fit.inside,
                     //withoutEnlargement: false
                     })
                         .jpeg()
@@ -67,7 +67,7 @@ var resizeImage = function (input, filename, width, height) { return __awaiter(v
                 return [2 /*return*/, jpgResize];
             case 3:
                 err_1 = _a.sent();
-                console.log("error from sharp: " + err_1);
+                console.log('error from sharp: ' + err_1);
                 return [2 /*return*/, err_1];
             case 4: return [2 /*return*/];
         }
