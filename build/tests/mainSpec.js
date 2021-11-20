@@ -41,33 +41,20 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 var supertest_1 = __importDefault(require("supertest"));
 var main_1 = __importDefault(require("../main"));
-var fs_1 = __importDefault(require("fs"));
 var path_1 = __importDefault(require("path"));
-var backupDir = path_1.default.join(__dirname, '..', '..', 'images/backup/');
+var clearThumbCache_1 = __importDefault(require("../utilities/clearThumbCache"));
+//const backupDir = path.join(__dirname, '..', '..','images/backup/')
 var thumbDir = path_1.default.join(__dirname, '..', '..', 'images/thumb/');
-fs_1.default.copyFile(backupDir + 'fjord-200-200.jpg', thumbDir + 'fjord-200-200.jpg', function (err) {
-    if (err)
-        throw err;
-    console.log('sample File copied to Thumbfolder');
-});
 // ------Tests 
 describe('Test endpoint responses', function () {
     beforeAll(function () {
-        console.log("hello WORLD: " + backupDir);
-    });
-    it('gets the api endpoint that does not exists', function (done) { return __awaiter(void 0, void 0, void 0, function () {
-        return __generator(this, function (_a) {
-            (0, supertest_1.default)(main_1.default)
-                .get("/api/images/?filename=BlablaIMage&width=200&height=200")
-                .expect(404, done);
-            return [2 /*return*/];
-        });
-    }); }),
-        it('gets a cached image from API', function (done) { return __awaiter(void 0, void 0, void 0, function () {
+        (0, clearThumbCache_1.default)(thumbDir);
+    }),
+        it('gets the api endpoint that does not exists', function (done) { return __awaiter(void 0, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 (0, supertest_1.default)(main_1.default)
-                    .get("/api/images/?filename=fjord&width=200&height=200")
-                    .expect(200, done);
+                    .get("/api/images/?filename=BlablaIMage&width=200&height=200")
+                    .expect(404, done);
                 return [2 /*return*/];
             });
         }); }),

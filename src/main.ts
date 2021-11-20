@@ -13,18 +13,6 @@ const port = 3000 || process.env.PORT;
 
 app.engine('html', ejs.renderFile);
 
-// Clear "Cache" Thumb Folder on Start
-const thumbDir = path.join(__dirname, '..', 'images/thumb/')
-clearThumbDir(thumbDir)
-
-// Create on sample Resizing Image for Jasmin Testing - after clearing
-const backupDir = path.join(__dirname, '..', 'images/backup/')
-//resizeImage(fullDir, "fjord", 200, 200);
-fs.copyFile(backupDir + 'fjord-200-200.jpg' , thumbDir + 'fjord-200-200.jpg', (err) => {
-  if (err) throw err;
-  console.log('sample File copied to Thumbfolder');
-});
-
 // Import Routes
 import routes from './routes/index';
 app.use('/api', routes)

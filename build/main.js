@@ -26,24 +26,10 @@ var express_1 = __importDefault(require("express"));
 var dotenv = __importStar(require("dotenv"));
 var ejs = __importStar(require("ejs"));
 var path_1 = __importDefault(require("path"));
-var clearThumbCache_1 = __importDefault(require("./utilities/clearThumbCache"));
-//import resizeImage from "./utilities/fileReader"
-var fs_1 = __importDefault(require("fs"));
 dotenv.config();
 var app = (0, express_1.default)();
 var port = 3000 || process.env.PORT;
 app.engine('html', ejs.renderFile);
-// Clear "Cache" Thumb Folder on Start
-var thumbDir = path_1.default.join(__dirname, '..', 'images/thumb/');
-(0, clearThumbCache_1.default)(thumbDir);
-// Create on sample Resizing Image for Jasmin Testing - after clearing
-var backupDir = path_1.default.join(__dirname, '..', 'images/backup/');
-//resizeImage(fullDir, "fjord", 200, 200);
-fs_1.default.copyFile(backupDir + 'fjord-200-200.jpg', thumbDir + 'fjord-200-200.jpg', function (err) {
-    if (err)
-        throw err;
-    console.log('sample File copied to Thumbfolder');
-});
 // Import Routes
 var index_1 = __importDefault(require("./routes/index"));
 app.use('/api', index_1.default);
